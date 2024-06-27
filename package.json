@@ -1,0 +1,38 @@
+{
+  "name": "webtoken",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev:build": "npx enmav --update-version && tsc",
+    "build:release": "rm -rf dist && npx enmav --update-version && npm publish"
+  },
+  "author": "permaficus <abukhalif2019@gmail.com>",
+  "license": "MIT",
+  "description": "Authentication and Refresh Token generator for WebApp",
+  "files": [
+    "dist",
+    "package.json",
+    "licence.md",
+    "README.md"
+  ],
+  "keywords": [
+    "JWT Token",
+    "Authorization Token",
+    "Refresh Token",
+    "Cookies Token",
+    "User Session"
+  ],
+  "bugs": {
+    "url": "https://github.com/permaficus/WebToken/issues"
+  },
+  "homepage": "https://github.com/permaficus/WebToken#readme",
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.9",
+    "enmav": "^0.7.12"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "typescript": "^5.5.2"
+  }
+}
