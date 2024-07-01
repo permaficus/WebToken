@@ -12,7 +12,8 @@
     "noEmit": false,
     "moduleResolution": "Node10",
     "declaration": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowUmdGlobalAccess": true
   },
   "exclude": ["node_modules", "dist", " tsconfig.json", "enmav.config.json"]
 }

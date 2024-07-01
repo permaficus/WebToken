@@ -1,6 +1,8 @@
+import { KeyObject } from "crypto";
+export type Secret = string | Buffer | KeyObject | { key: string | Buffer; passphrase: string }
 export interface WebtokenInitArguments {
-    tokenSecretKey?: string
-    refreshSecretKey?: string
+    tokenSecretKey?: string | Secret
+    refreshSecretKey?: string | Secret
     authTokenAge?: string
     refreshTokenAge?: string
 }

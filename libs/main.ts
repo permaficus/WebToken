@@ -1,4 +1,4 @@
-import jwt, { TokenExpiredError} from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import type { SignOptions } from 'jsonwebtoken';
 import { PayloadArguments, TokenType, VerifyingResponses, WebtokenInitArguments} from '../types/typedefs';
 import Crypto from 'crypto'
@@ -13,9 +13,16 @@ class WebToken {
         this.uuid = Crypto.randomUUID()
     }
 
+    private checkingTimeUnit (unit: string) {
+        unit = unit.toLowerCase();
+        if (!['s', 'm', 'h', 'd'].includes(unit)) {
+            throw new WebtokenError(`Wrong time unit format. Expected: "s, m, h, d", Received: "${unit}"`)
+        }
+    }
     private expireIn (value: string): number {
         const expire: string = /[0-9]+/g.exec(value)[0];
         const unit: string = /[a-z]+/gi.exec(value)[0];
+        this.checkingTimeUnit(unit)
         const tmap = {
             s: { time: +expire },
             m: { time: 60 * +expire },
@@ -28,7 +35,7 @@ class WebToken {
      * Create auth token based on JWT specification
      * 
      */
-    createAuthToken (payload: PayloadArguments, options: SignOptions ): string  {
+    createAuthToken (payload: PayloadArguments, options: SignOptions ): string | WebtokenError  {
         try {
             Object.assign(payload, { _type: 'auth_token' })
             return jwt.sign(payload, this.args.tokenSecretKey, {
@@ -36,14 +43,14 @@ class WebToken {
                 ...options
             });
         } catch (error: any) {
-            throw new WebtokenError(error.message);
+            return new WebtokenError(error.message);
         };
     }
     /**
      * Create refresh token based on JWT specification
      * 
      */
-    createRefreshToken (payload: PayloadArguments, options: SignOptions): string {
+    createRefreshToken (payload: PayloadArguments, options: SignOptions): string | WebtokenError {
         try {
             Object.assign(payload, { _type: 'refresh_token' });
             return jwt.sign(payload, this.args.refreshSecretKey, {
@@ -51,7 +58,7 @@ class WebToken {
                 ...options
             });
         } catch (error: any) {
-            throw new WebtokenError(error.message);
+            return new WebtokenError(error.message);
         }
     }
     /**
@@ -65,6 +72,11 @@ class WebToken {
         };
         let result: any;
         jwt.verify(token, secret.key, (err, decode) => {
+            result = {
+                verified: true,
+                details: typeof decode === 'object' ? { ...decode } : decode
+            };
+
             if (err instanceof TokenExpiredError) {
                 const errMessage = type === 'AuthToken' ? `Auth token has expired` : `Refresh token has expired`;
                 result = {
@@ -79,17 +91,6 @@ class WebToken {
                 result = {
                     verified: false,
                     details: err.message
-                };
-            };
-            if (!err) {
-                result = {
-                    verified: true,
-                    details: {
-                        // @ts-ignore
-                        ...decode._type && { _type: decode._type },
-                        // @ts-ignore
-                        ...decode.jti && { _id: decode.jti },
-                    }
                 };
             };
         });
