@@ -1,6 +1,6 @@
 # WebToken
 
-Tool for create an authentication and refresh token for based on JSON webtoken.
+Tool for create an authentication and refresh token based on JSON webtoken.
 
 # Motivation
 
