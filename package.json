@@ -1,10 +1,10 @@
 {
   "name": "lazy-webtoken",
-  "version": "1.0.45",
+  "version": "1.0.47",
   "main": "dist/index.js",
   "scripts": {
     "dev:build": "npx enmav --update-version && rm -rf dist && tsc",
-    "build:release": "rm -rf dist && npx enmav --update-version && npm publish --access=public"
+    "build:release": "rm -rf dist && npx enmav --update-version && tsc && npm publish --access=public"
   },
   "author": "permaficus <abukhalif2019@gmail.com>",
   "license": "MIT",
