@@ -1,9 +1,9 @@
 {
   "name": "webtoken",
-  "version": "1.0.0",
+  "version": "1.0.23",
   "main": "dist/index.js",
   "scripts": {
-    "dev:build": "npx enmav --update-version && tsc",
+    "dev:build": "npx enmav --update-version && rm -rf dist && tsc",
     "build:release": "rm -rf dist && npx enmav --update-version && npm publish"
   },
   "author": "permaficus <abukhalif2019@gmail.com>",

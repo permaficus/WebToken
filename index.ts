@@ -1,3 +1,3 @@
-import WebToken from "./libs/core";
+import { WebToken } from "./libs/main";
 
-export default WebToken
+export { WebToken }
