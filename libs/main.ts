@@ -1,6 +1,5 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import type { SignOptions } from 'jsonwebtoken';
-import { PayloadArguments, TokenType, VerifyingResponses, WebtokenInitArguments} from '../types/typedefs';
+import { PayloadArguments, TokenType, VerifyingResponses, WebTokenOptions, WebtokenInitArguments} from '../types/typedefs';
 import Crypto from 'crypto'
 import { WebtokenError } from './error';
 
@@ -35,7 +34,7 @@ class WebToken {
      * Create auth token based on JWT specification
      * 
      */
-    createAuthToken (payload: PayloadArguments, options: SignOptions ): string | WebtokenError  {
+    createAuthToken (payload: PayloadArguments, options: WebTokenOptions ): string | WebtokenError  {
         try {
             Object.assign(payload, { _type: 'auth_token' })
             return jwt.sign(payload, this.args.tokenSecretKey, {
@@ -50,7 +49,7 @@ class WebToken {
      * Create refresh token based on JWT specification
      * 
      */
-    createRefreshToken (payload: PayloadArguments, options: SignOptions): string | WebtokenError {
+    createRefreshToken (payload: PayloadArguments, options: WebTokenOptions): string | WebtokenError {
         try {
             Object.assign(payload, { _type: 'refresh_token' });
             return jwt.sign(payload, this.args.refreshSecretKey, {
