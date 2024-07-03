@@ -1,6 +1,6 @@
 {
   "name": "lazy-webtoken",
-  "version": "1.1.25",
+  "version": "1.1.30",
   "main": "dist/index.js",
   "scripts": {
     "dev:build": "npx enmav --update-version && rm -rf dist && tsc",
