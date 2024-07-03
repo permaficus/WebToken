@@ -1,15 +1,16 @@
 import { KeyObject } from "crypto";
-export type Secret = string | Buffer | KeyObject | { key: string | Buffer; passphrase: string }
+export type SecretKey = string | Buffer | KeyObject | { key: string | Buffer; passphrase: string }
 export interface WebtokenInitArguments {
-    tokenSecretKey?: string | Secret
-    refreshSecretKey?: string | Secret
+    authTokenSecretKey?: string | SecretKey
+    refreshSecretKey?: string | SecretKey
     authTokenAge?: string
     refreshTokenAge?: string
+    algorithm?: Algorithm | undefined
 }
 export type PayloadArguments = {
     aud?: string
     iss?: string
-    subj?: string
+    sub?: string
     jti?: string
 } | UserDefinedArguments
 export type UserDefinedArguments = {
@@ -19,6 +20,7 @@ export interface VerifyingResponses {
     verified: boolean
     reason?: string
     details?: string | object | undefined
+    claims?: object | undefined
 }
 export interface WebTokenOptions {
     algorithm?: Algorithm | undefined;
@@ -31,16 +33,16 @@ export interface WebTokenOptions {
     jwtid?: string | undefined;
     mutatePayload?: boolean | undefined;
     noTimestamp?: boolean | undefined;
-    header?: JwtHeader | undefined;
+    header?: JWTHeaders | undefined;
     encoding?: string | undefined;
     allowInsecureKeySizes?: boolean | undefined;
     allowInvalidAsymmetricKeyTypes?: boolean | undefined;
 }
-export interface JwtHeader {
+export interface JWTHeaders {
     alg: string | Algorithm;
     typ?: string | undefined;
     cty?: string | undefined;
-    crit?: Array<string | Exclude<keyof JwtHeader, "crit">> | undefined;
+    crit?: Array<string | Exclude<keyof JWTHeaders, "crit">> | undefined;
     kid?: string | undefined;
     jku?: string | undefined;
     x5u?: string | string[] | undefined;

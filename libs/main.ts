@@ -37,8 +37,9 @@ class WebToken {
     createAuthToken (payload: PayloadArguments, options: WebTokenOptions ): string | WebtokenError  {
         try {
             Object.assign(payload, { _type: 'auth_token' })
-            return jwt.sign(payload, this.args.tokenSecretKey, {
+            return jwt.sign(payload, this.args.authTokenSecretKey, {
                 expiresIn: this.expireIn(this.args.authTokenAge),
+                algorithm: options.algorithm || this.args.algorithm,
                 ...options
             });
         } catch (error: any) {
@@ -54,6 +55,7 @@ class WebToken {
             Object.assign(payload, { _type: 'refresh_token' });
             return jwt.sign(payload, this.args.refreshSecretKey, {
                 expiresIn: this.expireIn(this.args.refreshTokenAge),
+                algorithm: options.algorithm || this.args.algorithm,
                 ...options
             });
         } catch (error: any) {
@@ -66,14 +68,14 @@ class WebToken {
      */
     verify (token: string, type: TokenType): VerifyingResponses {
         const secret = {
-            ...type === 'AuthToken' && { key: this.args.tokenSecretKey },
+            ...type === 'AuthToken' && { key: this.args.authTokenSecretKey },
             ...type === 'RefreshToken' && { key: this.args.refreshSecretKey }
         };
         let result: any;
         jwt.verify(token, secret.key, (err, decode) => {
             result = {
                 verified: true,
-                details: typeof decode === 'object' ? { ...decode } : decode
+                ...(typeof decode === 'object') ? { claims: { ...decode } } : { details: decode }
             };
 
             if (err instanceof TokenExpiredError) {
