@@ -34,7 +34,7 @@ class WebToken {
      * Create auth token based on JWT specification
      * 
      */
-    createAuthToken (payload: PayloadArguments, options: WebTokenOptions ): string | WebtokenError  {
+    createAuthToken (payload: PayloadArguments, options?: WebTokenOptions ): string | WebtokenError  {
         try {
             Object.assign(payload, { _type: 'auth_token' })
             return jwt.sign(payload, this.args.authTokenSecretKey, {
@@ -50,7 +50,7 @@ class WebToken {
      * Create refresh token based on JWT specification
      * 
      */
-    createRefreshToken (payload: PayloadArguments, options: WebTokenOptions): string | WebtokenError {
+    createRefreshToken (payload: PayloadArguments, options?: WebTokenOptions): string | WebtokenError {
         try {
             Object.assign(payload, { _type: 'refresh_token' });
             return jwt.sign(payload, this.args.refreshSecretKey, {
