@@ -39,7 +39,7 @@ class WebToken {
             Object.assign(payload, { _type: 'auth_token' })
             return jwt.sign(payload, this.args.authTokenSecretKey, {
                 expiresIn: this.expireIn(this.args.authTokenAge),
-                algorithm: options.algorithm || this.args.algorithm,
+                algorithm: options?.algorithm || this.args.algorithm,
                 ...options
             });
         } catch (error: any) {
@@ -55,7 +55,7 @@ class WebToken {
             Object.assign(payload, { _type: 'refresh_token' });
             return jwt.sign(payload, this.args.refreshSecretKey, {
                 expiresIn: this.expireIn(this.args.refreshTokenAge),
-                algorithm: options.algorithm || this.args.algorithm,
+                algorithm: options?.algorithm || this.args.algorithm,
                 ...options
             });
         } catch (error: any) {
