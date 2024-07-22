@@ -98,6 +98,12 @@ class WebToken {
         
         return result;
     }
+    /**
+     * Convert ageing string to ms
+     */
+    convertAgeingToMS (value: string): number {
+        return this.expireIn(value);
+    }
 }
 
 export { WebToken }
